@@ -22,7 +22,7 @@
         <div class="col-md-8">
             <section class="content">
                 <h1>KATEKISASI</h1>
-                {!! $beranda->beranda !!}
+                {!! (count($beranda) > 0) ? $beranda->beranda : '' !!}
             </section>
         </div>
     </div>
