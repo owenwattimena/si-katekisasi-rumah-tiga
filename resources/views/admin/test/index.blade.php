@@ -20,12 +20,14 @@
             <h3 class="box-title">Tes</h3>
         </div>
         <div class="box-body">
+            @if (isset($periode))
             <button class="btn btn-flat bg-olive" style="margin-bottom: 15px" data-toggle="modal" data-target="#modal-default">TAMBAH</button>
+            @endif
 
             <div class="modal fade" id="modal-default">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="{{ route('admin.test.post') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.test.post') }}" method="POST">
                             @csrf
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -35,7 +37,7 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="tanggal">Periode</label>
-                                    <input type="hidden" name="id_periode" value="{{ $periode->id }}">
+                                    <input type="hidden" name="id_periode" value="{{ $periode ? $periode->id : '' }}">
                                     <input type="text" class="form-control" id="tanggal" value="{{ old('periode', ($periode ? $periode->periode : '')) }}" readonly>
                                     @error('tanggal')
                                     <span class="help-block">{{ $message }}</span>
@@ -69,6 +71,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label for="tipe">Tipe</label>
+                                    <select class="form-control" id="tipe" name="tipe">
+                                        <option value="berganda">Pilihan Ganda</option>
+                                        <option value="essay">Essay</option>
+                                    </select>
+                                    @error('tipe')
+                                    <span class="help-block">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
                                     <label for="judul">Judul</label>
                                     <input type="text" class="form-control" id="judul" name="judul" value="{{ old('judul', '') }}" required placeholder="Masukan Judul">
                                     @error('judul')
@@ -79,13 +91,6 @@
                                     <label for="keterangan">Keterangan</label>
                                     <input type="text" class="form-control" id="keterangan" name="keterangan" value="{{ old('keterangan', '') }}" required placeholder="Masukan keterangan">
                                     @error('keterangan')
-                                    <span class="help-block">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="soal">Soal</label>
-                                    <input type="file" class="form-control" id="soal" name="soal" value="{{ old('soal', '') }}" required>
-                                    @error('soal')
                                     <span class="help-block">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -103,9 +108,9 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Tipe</th>
                         <th>Judul</th>
                         <th>Keterangan</th>
-                        <th>Soal</th>
                         <th>Tanggal Tes</th>
                         <th>Jam Mulai</th>
                         <th>Jam Selesai</th>
@@ -114,18 +119,19 @@
                 </thead>
                 <tbody>
                     @php
-                        $no = 0;
+                    $no = 0;
                     @endphp
                     @foreach ($test as $item)
                     <tr>
                         <td>{{ ++$no }}</td>
+                        <td>{{ Str::ucfirst($item->tipe) }}</td>
                         <td>{{ $item->judul }}</td>
                         <td>{{ $item->keterangan }}</td>
-                        <td> <a href="{{ asset($item->soal) }}" target="_blank" rel="noopener noreferrer">link soal</a> </td>
                         <td>{{ $item->tanggal }}</td>
                         <td>{{ $item->jam_mulai }}</td>
                         <td>{{ $item->jam_selesai }}</td>
                         <td>
+                            <a href="{{ route('admin.test.soal', $item->id) }}" class="btn btn-xs bg-purple btn-flat">SOAL</a>
                             <a href="{{ route('admin.test.jawaban', $item->id) }}" class="btn btn-xs bg-olive btn-flat">JAWABAN</a>
                             <a href="" class="btn btn-xs bg-maroon btn-flat">HAPUS</a>
                         </td>
@@ -135,9 +141,9 @@
                 <tfoot>
                     <tr>
                         <th>#</th>
+                        <th>Tipe</th>
                         <th>Judul</th>
                         <th>Keterangan</th>
-                        <th>Soal</th>
                         <th>Tanggal Tes</th>
                         <th>Jam Mulai</th>
                         <th>Jam Selesai</th>
@@ -154,6 +160,7 @@
 @section('script')
 <script src="{{ asset('assets/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+
 <script>
     $(function() {
         $('#example1').DataTable()

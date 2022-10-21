@@ -17,11 +17,11 @@ class CreateTesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_periode');
             $table->string('judul');
-            $table->string('soal');
             $table->mediumText('keterangan');
             $table->date('tanggal');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
+            $table->enum('tipe', ['berganda', 'essay']);
             $table->timestamp('dibuat_pada')->useCurrent();
 
             $table->foreign('id_periode')->references('id')->on('periode');

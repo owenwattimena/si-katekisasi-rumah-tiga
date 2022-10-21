@@ -40,8 +40,8 @@
             
             <li class="{{ (request()->is('admin/jadwal*')) ? 'active' : '' }}"><a href="{{ route('admin.jadwal') }}"><i class="fa fa-calendar"></i> <span>Jadwal</span></a></li>
             
-            <li class="{{ (request()->is('test*')) ? 'active' : '' }}"><a href="{{ route('admin.test') }}"><i class="fa fa-list"></i> <span>Test</span></a></li>
-            <li class="{{ (request()->is('pengaturan*')) ? 'active' : '' }}"><a href="{{ route('admin.pengaturan') }}"><i class="fa fa-cog"></i> <span>Pengaturan</span></a></li>
+            <li class="{{ (request()->is('admin/tes*')) ? 'active' : '' }}"><a href="{{ route('admin.test') }}"><i class="fa fa-list"></i> <span>Test</span></a></li>
+            <li class="{{ (request()->is('admin/pengaturan*')) ? 'active' : '' }}"><a href="{{ route('admin.pengaturan') }}"><i class="fa fa-cog"></i> <span>Pengaturan</span></a></li>
             
 
         </ul>

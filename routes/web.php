@@ -35,7 +35,7 @@ Route::middleware(['auth:katekisan'])->group(function () {
     Route::get('/jadwal/{id}', [WebJadwalController::class, 'show'])->name('jadwal.show');
     Route::post('/absen', [WebJadwalController::class, 'absen'])->name('jadwal.absen');
     Route::get('/tes', [TesController::class, 'index'])->name('tes');
-    Route::post('/tes/{id}', [TesController::class, 'store'])->name('tes.post');
+    Route::get('/tes/{id}', [TesController::class, 'mulai'])->name('tes.mulai');
 });
 
 Route::get('pengumuman', function(){
@@ -82,7 +82,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('admin/tes', [AdminTesController::class, 'index'])->name('admin.test');
     Route::post('admin/tes', [AdminTesController::class, 'store'])->name('admin.test.post');
-    Route::get('admin/tes/{id}', [AdminTesController::class, 'jawaban'])->name('admin.test.jawaban');
+    Route::get('admin/tes/{id}', [AdminTesController::class, 'soal'])->name('admin.test.soal');
+    Route::post('admin/tes/{id}', [AdminTesController::class, 'storeSoal'])->name('admin.test.soal.post');
+    Route::delete('admin/tes/{id}/soal/{idSoal}', [AdminTesController::class, 'deleteSoal'])->name('admin.test.soal.delete');
+    Route::get('admin/tes/{id}/jawaban', [AdminTesController::class, 'jawaban'])->name('admin.test.jawaban');
     
     Route::get('/template', function () {
         return view('admin.templates.template');

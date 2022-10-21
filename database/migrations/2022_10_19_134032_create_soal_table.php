@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJawabanTesTable extends Migration
+class CreateSoalTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateJawabanTesTable extends Migration
      */
     public function up()
     {
-        Schema::create('jawaban_tes', function (Blueprint $table) {
+        Schema::create('soal', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_tes');
-            $table->unsignedBigInteger('id_katekisan');
-            $table->string('jawaban');
-            $table->timestamp('tanggal_unggah')->useCurrent();
+            $table->tinyInteger('nomor_soal');
+            $table->mediumText('soal');
 
             $table->foreign('id_tes')->references('id')->on('tes');
-            $table->foreign('id_katekisan')->references('id')->on('katekisan');
         });
     }
 
@@ -32,6 +30,6 @@ class CreateJawabanTesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jawaban_tes');
+        Schema::dropIfExists('soal');
     }
 }

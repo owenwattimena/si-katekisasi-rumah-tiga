@@ -10,7 +10,7 @@ class Jawaban extends Model
 {
     use HasFactory;
 
-    protected $table = 'jawaban_tes';
+    protected $table = 'jawaban';
     public $timestamps = false;
 
     /**

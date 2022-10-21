@@ -27,7 +27,7 @@
                     @else
                     <button class="btn rounded-0 w-100 btn-success disabled">SUDAH ABSEN</butt>
                         @endif --}}
-                        @if (count($item->jawaban) <= 0)
+                        {{-- @if (count($item->jawaban) <= 0)
 
                         <a href="{{ asset($item->soal) }}" target="_blank" class="btn rounded-0 w-100 btn-success">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
@@ -54,11 +54,17 @@
                                 </div>
                             </form>
                         </div>
-                        @else
-                        <button class="btn btn-success rounded-0 w-100 disabled" type="button" >
+                        @else --}}
+                        {{-- <button class="btn btn-success rounded-0 w-100 disabled" type="button" >
                             SUDAH UNGGAH
-                        </button>
-                        @endif
+                        </button> --}}
+                        {{-- <form action="" method="post">
+                            @csrf --}}
+                            <a href="{{ route('tes.mulai', $item->id) }}" class="btn btn-success rounded-0 w-100" type="submit" >
+                                MULAI TES
+                            </a>
+                        {{-- </form> --}}
+                        {{-- @endif --}}
 
                 </div>
             </div>
