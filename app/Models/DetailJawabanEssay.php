@@ -6,11 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PilihanJawaban extends Model
+class DetailJawabanEssay extends Model
 {
     use HasFactory;
-    protected $table = "pilihan_jawaban_berganda";
-    public $timestamps = false;
+
+    protected $table = 'detail_jawaban_tes_essay';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'id_jawaban',
+        'id_soal',
+        'jawaban',
+    ];
 
     /**
      * Get the soal that owns the PilihanJawaban

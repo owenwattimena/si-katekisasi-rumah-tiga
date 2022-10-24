@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Config;
 
 class AuthController extends Controller
 {
-
     public function viewMasuk()
     {
         return view('web.auth.masuk');
@@ -27,19 +26,17 @@ class AuthController extends Controller
         ]);
 
         $katekisan = Katekisan::where('username', $request->username)->first();
-        if($katekisan && $katekisan->status_katekumen != 1)
-        {
+        if ($katekisan && $katekisan->status_katekumen != 1) {
             return redirect()->back()->with(AlertFormatter::danger('Status akun anda ' . Config::get('app.status_katekumen', 'default')[$katekisan->status_katekumen]));
         }
 
         if (Auth::guard('katekisan')->attempt($credentials)) {
             $request->session()->regenerate();
- 
+
             return redirect()->intended('/');
         }
- 
-        return redirect()->back()->with(AlertFormatter::danger('Username atau Password salah!'));
 
+        return redirect()->back()->with(AlertFormatter::danger('Username atau Password salah!'));
     }
 
     public function viewDaftar()
@@ -150,8 +147,7 @@ class AuthController extends Controller
         $katekisan->akte_kelahiran     = $akte_kelahiran_path;
         $katekisan->id_periode      = $request->id_periode;
 
-        if($katekisan->save())
-        {
+        if ($katekisan->save()) {
             return redirect()->back()->with(AlertFormatter::success('Pendaftaran berhasil!'));
         }
         return redirect()->back()->with(AlertFormatter::danger('Pendaftaran gagal!'));

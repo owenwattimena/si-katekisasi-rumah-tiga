@@ -32,8 +32,20 @@ class TesController extends Controller
 
     public function mulai(Request $request, $id)
     {
+        $katekisan = auth()->guard('katekisan')->user()->id;
         $data['test'] = Test::findOrFail($id);
+        $jawaban = Jawaban::where('id_tes', $id)->where('id_katekisan', $katekisan)->first();
         $data['soal'] = Soal::with('pilihan')->where('id_tes', $data['test']->id)->get()->shuffle();
+        if(!$jawaban){
+            $jawaban    = new Jawaban;
+            $jawaban->id_tes    = $id;
+            $jawaban->id_katekisan  = $katekisan;
+            $jawaban->tanggal   = date('Y-m-d');
+            $jawaban->jam_mulai = date('H:i');
+            if(!$jawaban->save()){
+                return redirect()->back()->with(AlertFormatter::danger('Gagal mengakses tes. Coba lagi!'));
+            }
+        }
         return view('web.test.mulai', $data);
     }
 

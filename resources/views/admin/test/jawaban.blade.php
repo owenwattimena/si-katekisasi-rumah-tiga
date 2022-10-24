@@ -21,34 +21,71 @@
             <h3 class="box-title">Daftar Jawaban - {{ $jawaban->judul }} - {{ $jawaban->tanggal }}</h3>
         </div>
         <div class="box-body">
+            <p>Total Soal : {{ count($jawaban->soal) }}</p>
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th style="width: 30px;">#</th>
                         <th>Nama Lengkap</th>
-                        <th>Jawaban</th>
-                        <th>Tanggal Unggah</th>
+                        <th>Soal di Jawab</th>
+                        <th>Soal Benar</th>
+                        <th>Nilai</th>
+                        <th>Tanggal</th>
+                        <th>Jam Mulai</th>
+                        <th>Jam Selesai</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @php
-                        $no = 0;
+                    $no = 0;
                     @endphp
                     @foreach ($jawaban->jawaban as $item)
                     <tr>
                         <td>{{ ++$no }}</td>
                         <td>{{ $item->katekisan->nama_lengkap }}</td>
-                        <td> <a href="{{ asset($item->jawaban) }}" target="_blank" rel="noopener noreferrer">link jawaban</a> </td>
-                        <td>{{ $item->tanggal_unggah }}</td>
+                        <td>{{ (count($item->detailJawabanBerganda) > 0) ? count($item->detailJawabanBerganda) : count($item->detailJawabanEssay) }}</td>
+                        <td>
+                            @if (count($item->detailJawabanBerganda) > 0)
+                            @php
+                            $sum = 0;
+                            $sum = $item->detailJawabanBerganda->sum(function($val){
+                                return $val->pilihanJawaban->jawaban;
+                            });
+                            @endphp
+                            {{ $sum }}
+                            @else
+                            @php
+                            $sum = $item->detailJawabanEssay->sum(function($val){
+                                return $val->benar;
+                            });
+                            @endphp
+                            {{ $sum }}
+                            @endif
+                        </td>
+                        <td>
+                            {{ (  ($sum*10) / (count($jawaban->soal)*10)  )*100 }}
+                        </td>
+                        <td>{{ $item->tanggal }}</td>
+                        <td>{{ $item->jam_mulai }}</td>
+                        <td>{{ $item->jam_selesai ?? '-' }}</td>
+                        <td>
+                            <a href="{{ route('admin.test.jawaban.detail', [$jawaban->id, $item->id]) }}" class="btn bg-green btn-sm">DETAIL</a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>#</th>
+                        <th style="width: 30px;">#</th>
                         <th>Nama Lengkap</th>
-                        <th>Jawaban</th>
-                        <th>Tanggal Unggah</th>
+                        <th>Soal di Jawab</th>
+                        <th>Soal Benar</th>
+                        <th>Nilai</th>
+                        <th>Tanggal</th>
+                        <th>Jam Mulai</th>
+                        <th>Jam Selesai</th>
+                        <th></th>
                     </tr>
                 </tfoot>
             </table>

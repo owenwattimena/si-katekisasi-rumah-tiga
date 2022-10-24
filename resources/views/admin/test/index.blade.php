@@ -133,7 +133,12 @@
                         <td>
                             <a href="{{ route('admin.test.soal', $item->id) }}" class="btn btn-xs bg-purple btn-flat">SOAL</a>
                             <a href="{{ route('admin.test.jawaban', $item->id) }}" class="btn btn-xs bg-olive btn-flat">JAWABAN</a>
-                            <a href="" class="btn btn-xs bg-maroon btn-flat">HAPUS</a>
+                            
+                            <form action="{{ route('admin.test.delete', $item->id) }}" style="display: inline" method="POST">
+                                @method('delete')
+                                @csrf
+                                <button onclick="return confirm('Yakin ingin menghapus Tes?')" class="btn btn-xs bg-maroon btn-flat">HAPUS</button>
+                            </form>
                         </td>
                     </tr>
                     @endforeach

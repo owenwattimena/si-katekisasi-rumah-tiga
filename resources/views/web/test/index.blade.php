@@ -70,7 +70,7 @@
             </div>
         </div>
         @empty
-        <p class="mb-5 pb-5">Tidak ada tes.</p>
+        <p class="pb-5" style="margin-bottom: 500px">Tidak ada tes.</p>
         @endforelse
     </div>
 </div>

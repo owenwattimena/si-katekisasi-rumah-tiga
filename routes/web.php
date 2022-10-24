@@ -4,6 +4,7 @@ use App\Models\Katekisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\TesController;
+use App\Http\Controllers\API\TestController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Admin\JadwalController;
 use App\Http\Controllers\Admin\PeriodeController;
@@ -31,6 +32,13 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:katekisan'])->group(function () {
+    Route::prefix('web-api/v1')->group(function () {
+        Route::get('tes/{id}', [TestController::class, 'getTest']);
+        Route::get('tes/{id}/soal', [TestController::class, 'getSoal']);
+        Route::post('tes/{id}/soal/{idJawaban}', [TestController::class, 'postJawaban']);
+        Route::post('tes/{id}/selesai', [TestController::class, 'testFinish']);
+    });
+
     Route::get('/jadwal', [WebJadwalController::class, 'index'])->name('jadwal');
     Route::get('/jadwal/{id}', [WebJadwalController::class, 'show'])->name('jadwal.show');
     Route::post('/absen', [WebJadwalController::class, 'absen'])->name('jadwal.absen');
@@ -82,10 +90,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('admin/tes', [AdminTesController::class, 'index'])->name('admin.test');
     Route::post('admin/tes', [AdminTesController::class, 'store'])->name('admin.test.post');
+    Route::delete('admin/tes/{id}', [AdminTesController::class, 'deleteTest'])->name('admin.test.delete');
     Route::get('admin/tes/{id}', [AdminTesController::class, 'soal'])->name('admin.test.soal');
     Route::post('admin/tes/{id}', [AdminTesController::class, 'storeSoal'])->name('admin.test.soal.post');
     Route::delete('admin/tes/{id}/soal/{idSoal}', [AdminTesController::class, 'deleteSoal'])->name('admin.test.soal.delete');
     Route::get('admin/tes/{id}/jawaban', [AdminTesController::class, 'jawaban'])->name('admin.test.jawaban');
+    Route::get('admin/tes/{id}/jawaban/detail/{idJawaban}', [AdminTesController::class, 'jawabanDetail'])->name('admin.test.jawaban.detail');
+    Route::get('admin/tes/essay/{id}/nilai', [AdminTesController::class, 'nilaiEssay'])->name('admin.test.essay.nilai');
     
     Route::get('/template', function () {
         return view('admin.templates.template');

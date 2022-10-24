@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Soal;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,5 +23,15 @@ class Test extends Model
     public function jawaban(): HasMany
     {
         return $this->hasMany(Jawaban::class, 'id_tes', 'id');
+    }
+
+    /**
+     * Get all of the soal for the Test
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function soal(): HasMany
+    {
+        return $this->hasMany(Soal::class, 'id_tes', 'id');
     }
 }

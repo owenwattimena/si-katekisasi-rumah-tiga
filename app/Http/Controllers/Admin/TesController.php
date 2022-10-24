@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Soal;
 use App\Models\Test;
 use App\Models\Periode;
 use Illuminate\Http\Request;
 use App\Helpers\AlertFormatter;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\DetailJawabanEssay;
 
 class TesController extends Controller
 {
@@ -146,6 +148,18 @@ class TesController extends Controller
         }
     }
 
+    public function deleteTest($idTest)
+    {
+        try {
+            DB::transaction(function () use ($idTest) {
+                DB::table('tes')->where('id', $idTest)->delete();
+            });
+            return redirect()->back()->with(AlertFormatter::success('Tes berhasil di hapus!'));
+        } catch (\Throwable $e) {
+            return redirect()->back()->with(AlertFormatter::danger('Tes gagal di hapus!'));
+        }
+    }
+
     public function deleteSoal(Request $request, $idTest, $idSoal)
     {
         try {
@@ -160,9 +174,61 @@ class TesController extends Controller
 
     public function jawaban($id)
     {
-        $data['jawaban'] = Test::with(['jawaban' => function ($query) {
-            return $query->with('katekisan')->first();
-        }])->where('id', $id)->first();
+        $data['jawaban'] = Test::with(
+            [
+                'jawaban' => function ($query) {
+                    return $query->with([
+                        'katekisan', 
+                        'detailJawabanBerganda' => function($query){
+                            return $query->with('pilihanJawaban');
+                        },
+                        'detailJawabanEssay'
+                    ])->get();
+                },
+                'soal'
+            ]
+        )->where('id', $id)->first();
+        // $data['soal'] = Soal::where('id_tes', $id)->get();
+        // dd($data);
         return view('admin.test.jawaban', $data);
+    }
+
+    public function jawabanDetail($idTes, $idJawaban)
+    {
+        $data['test'] = Test::with(
+            [
+                'jawaban' => function ($query) use ($idJawaban) {
+                    return $query->with([
+                        'katekisan', 
+                        'detailJawabanBerganda' => function($query){
+                            return $query->with(['pilihanJawaban' => function($query){
+                                return $query->with(['soal' => function($query){
+                                    return $query->with(['jawaban' => function($query){
+                                        return $query->where('jawaban', 1);
+                                    }]);
+                                }]);
+                            }]);
+                        },
+                        'detailJawabanEssay' => function($query){
+                            return $query->with(['soal']);
+                        }
+                    ])->where('id', $idJawaban)->get();
+                },
+                'soal'
+            ]
+        )->where('id', $idTes)->first();
+        // dd($data);
+        return view('admin.test.jawaban-detail', $data);
+    }
+
+    public function nilaiEssay(Request $request, $id)
+    {
+        $jawaban = DetailJawabanEssay::findOrFail($id);
+        $jawaban->benar = $request->query('nilai') == 'benar' ? true : false;
+        if($jawaban->save())
+        {
+            return redirect()->back()->with(AlertFormatter::success('Nilai berhasil di simpan!'));
+        }
+        return redirect()->back()->with(AlertFormatter::danger('Nilai gagal di simpan!'));
     }
 }

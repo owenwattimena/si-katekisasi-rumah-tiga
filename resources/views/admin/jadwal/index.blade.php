@@ -59,7 +59,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="tempat">Tempat</label>
-                                    <input type="text" class="form-control" id="tempat" name="tempat" value="{{ old('tempat', '') }}" required placeholder="Masukan Tempat">
+                                    {{-- <input type="text" class="form-control" id="tempat" name="tempat" value="{{ old('tempat', '') }}" required placeholder="Masukan Tempat"> --}}
+                                    <select name="tempat" id="tempat" class="form-control">
+                                        <option value="Gd. Gereja Cahaya Kemuliaan">Gd. Gereja Cahaya Kemuliaan</option>
+                                        <option value="Gd. Gereja Dusun Kasih">Gd. Gereja Dusun Kasih</option>
+                                    </select>
                                     @error('tempat')
                                     <span class="help-block">{{ $message }}</span>
                                     @enderror
