@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/jadwal', [JadwalController::class, 'store'])->name('admin.jadwal.post');
     Route::put('admin/jadwal/{id}', [JadwalController::class, 'update'])->name('admin.jadwal.put');
     Route::get('admin/jadwal/{id}/absensi', [JadwalController::class, 'absensi'])->name('admin.jadwal.absensi');
+    Route::get('admin/jadwal/{id}/absensi/download', [JadwalController::class, 'downloadAbsen'])->name('admin.jadwal.absensi.download');
     Route::get('admin/jadwal/{id}/delete', [JadwalController::class, 'delete'])->name('admin.jadwal.delete');
 
     Route::get('admin/tes', [AdminTesController::class, 'index'])->name('admin.test');

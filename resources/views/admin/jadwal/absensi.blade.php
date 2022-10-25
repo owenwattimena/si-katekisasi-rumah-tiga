@@ -21,6 +21,7 @@
             <h3 class="box-title">Daftar Hadir - {{ $jadwal->tanggal }} - {{ $jadwal->tempat }}</h3>
         </div>
         <div class="box-body">
+            <a href="{{ route('admin.jadwal.absensi.download', $jadwal->id) }}" target="_blank" class="btn bg-maroon btn-xs" style="margin-bottom: 15px">UNDUH</a>
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                     <tr>

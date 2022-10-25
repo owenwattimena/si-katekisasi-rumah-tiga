@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
 use App\Services\JadwalService;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class JadwalController extends Controller
 {
@@ -85,6 +86,17 @@ class JadwalController extends Controller
             return $q->showLess();
         }])->where('id_jadwal', $id)->get();
         return view('admin.jadwal.absensi', $data);
+    }
+    
+    public function downloadAbsen($id)
+    {
+        $data['jadwal'] = Jadwal::where('id', $id)->first();
+        $data['absensi'] = Absensi::with(['katekisan' => function($q){
+            return $q->showLess();
+        }])->where('id_jadwal', $id)->get();
+        $pdf = Pdf::loadView('admin.jadwal.pdf', $data);
+        return $pdf->download('daftar-hadir.pdf');
+        // return view('admin.jadwal.pdf', $data);
     }
 
     public function delete($id)
