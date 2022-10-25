@@ -313,8 +313,8 @@
                     '_token': `{{ csrf_token() }}`
                 }
             }).done(function(result) {
+                window.location.href = `{{ route('tes') }}`;
                 JsLoadingOverlay.hide();
-                console.log(result)
             }).fail(function(e) {
                 JsLoadingOverlay.hide();
                 console.log(e)

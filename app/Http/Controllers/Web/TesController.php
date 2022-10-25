@@ -34,7 +34,9 @@ class TesController extends Controller
     {
         $katekisan = auth()->guard('katekisan')->user()->id;
         $data['test'] = Test::findOrFail($id);
+
         $jawaban = Jawaban::where('id_tes', $id)->where('id_katekisan', $katekisan)->first();
+        if($jawaban->jam_selesai != null) return redirect()->back()->with(AlertFormatter::info('Tes telah di selesaikan!'));
         $data['soal'] = Soal::with('pilihan')->where('id_tes', $data['test']->id)->get()->shuffle();
         if(!$jawaban){
             $jawaban    = new Jawaban;
