@@ -96,12 +96,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('admin/tes/{id}', [AdminTesController::class, 'storeSoal'])->name('admin.test.soal.post');
     Route::delete('admin/tes/{id}/soal/{idSoal}', [AdminTesController::class, 'deleteSoal'])->name('admin.test.soal.delete');
     Route::get('admin/tes/{id}/jawaban', [AdminTesController::class, 'jawaban'])->name('admin.test.jawaban');
+    Route::get('admin/tes/{id}/jawaban/download', [AdminTesController::class, 'downloadHasil'])->name('admin.test.jawaban.download');
     Route::get('admin/tes/{id}/jawaban/detail/{idJawaban}', [AdminTesController::class, 'jawabanDetail'])->name('admin.test.jawaban.detail');
     Route::get('admin/tes/essay/{id}/nilai', [AdminTesController::class, 'nilaiEssay'])->name('admin.test.essay.nilai');
     
     Route::get('/template', function () {
         return view('admin.templates.template');
     });
+
     Route::get('admin/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
     Route::get('admin/pengaturan', [PengaturanController::class, 'index'])->name('admin.pengaturan');

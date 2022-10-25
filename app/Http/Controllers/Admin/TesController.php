@@ -10,6 +10,8 @@ use App\Helpers\AlertFormatter;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\DetailJawabanEssay;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class TesController extends Controller
 {
@@ -191,6 +193,25 @@ class TesController extends Controller
         // $data['soal'] = Soal::where('id_tes', $id)->get();
         // dd($data);
         return view('admin.test.jawaban', $data);
+    }
+
+    public function downloadHasil($id){
+        $data['jawaban'] = Test::with(
+            [
+                'jawaban' => function ($query) {
+                    return $query->with([
+                        'katekisan', 
+                        'detailJawabanBerganda' => function($query){
+                            return $query->with('pilihanJawaban');
+                        },
+                        'detailJawabanEssay'
+                    ])->get();
+                },
+                'soal'
+            ]
+        )->where('id', $id)->first();
+        $pdf = Pdf::loadView('admin.test.pdf', $data);
+        return $pdf->download('daftar-nilai.pdf');
     }
 
     public function jawabanDetail($idTes, $idJawaban)

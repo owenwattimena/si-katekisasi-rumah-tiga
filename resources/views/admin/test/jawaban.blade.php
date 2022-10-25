@@ -21,6 +21,7 @@
             <h3 class="box-title">Daftar Jawaban - {{ $jawaban->judul }} - {{ $jawaban->tanggal }}</h3>
         </div>
         <div class="box-body">
+            <a href="{{ route('admin.test.jawaban.download', $jawaban->id) }}" target="_blank" class="btn bg-maroon btn-xs" style="margin-bottom: 15px;">UNDUH</a>
             <p>Total Soal : {{ count($jawaban->soal) }}</p>
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
